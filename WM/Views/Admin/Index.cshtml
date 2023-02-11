@@ -1,0 +1,143 @@
+﻿@model Core.ResultType.Result<DataObject.ViewModels.AdminModuleViewModel>
+
+@{
+    ViewData["Title"] = "Profil";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@section Head{
+    <script src="~/ext_lib/google_statistic/loader.js"></script>
+    <head>
+    </head>
+}
+
+@if (!Model.IsSuccess)
+{
+    <div class="alert alert-danger mt-2 p-2">
+        @Model.Message
+    </div>
+}
+else
+{
+    <div class="content-wrapper">
+
+        <!-- Page header -->
+        <div class="page-header border-bottom-0">
+            <div class="page-header-content header-elements-md-inline">
+                <div class="page-title d-flex">
+                </div>
+
+            </div>
+        </div>
+        <!-- /page header -->
+        <!-- Content area -->
+        <div class="content pt-0">
+            <!-- Form validation -->
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">DETAYLAR</h5>
+
+
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            <a class="list-icons-item" data-action="collapse"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <!-- details -->
+                    <div class="card">
+                        <div class="card-header border-bottom bg-transparent header-elements-inline">
+                            <span class="card-title">Kullanıcı Detayları</span>
+                            
+                        </div>
+
+                        <div class="card-header border-bottom bg-transparent header-elements-inline">
+                            <span class="card-title">
+                                Online Kullanıcı Sayısı: @Model.Data.OnlineCount
+                            </span>
+                            
+                        </div>
+                        <div class="card-header border-bottom bg-transparent header-elements-inline">
+                            <span class="card-title">
+                                Offline Kullanıcı Sayısı: @Model.Data.OfflineCount
+                            </span>
+                            
+                        </div>
+                        <div class="card-header border-bottom bg-transparent header-elements-inline">
+                            <span class="card-title">
+                                Aktifleşmiş Kullanıcı Sayısı: @Model.Data.AccountConfirmCount
+                            </span>
+                            
+                        </div>
+                        <div class="card-header border-bottom bg-transparent header-elements-inline">
+                            <span class="card-title">
+                                Aktifleştirilmemiş Kullanıcı Sayısı: @Model.Data.AccountNonConfirmCount
+                            </span>
+                            
+                        </div>
+                    </div>
+                    <table class="table table-borderless table-xs my-2">
+                        @if (Model.Data != null && Model.Data.AdminDo != null && Model.Data.AdminDo.Id > 0)
+                        {
+                            var admin = Model.Data.AdminDo;
+                            <tbody>
+                                <tr>
+                                    <td><i class="icon-info22 mr-2"></i>Ad Soyad: </td>
+                                    <td class="text-center">@admin.Name @admin.Surname</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="icon-info22 mr-2"></i>Kullanıcı Adı : </td>
+                                    <td class="text-center">@admin.Email</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="icon-info22 mr-2"></i>Şifre : </td>
+                                    <td class="text-center">************ <a href="/Admin/PasswordChange/@admin.Id" class="list-icons-item"><i class="icon-pencil7"></i></a> </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="icon-info22 mr-2"></i>E-Posta : </td>
+                                    <td class="text-center">@admin.Email</td>
+                                </tr>
+
+                                <tr>
+                                    <td><i class="icon-info22 mr-2"></i>Hesabı Kapat : </td>
+                                    <td class="text-center"><a href="#" onclick='openCloseAccountForm(JSON.stringify(@Html.Raw(Json.Serialize(admin))))' class="list-icons-item"><i class="icon-trash"></i></a></td>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </div>
+                <!-- /details -->
+            </div>
+        </div>
+        <!-- /form validation -->
+
+    </div>
+    <!-- /content area -->
+}
+
+
+
+@section Scripts{
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+.fa-sign-out-alt {
+    padding-right: 6px;
+}
+
+.btn-desing {
+    background-color: #da5b00;
+}
+
+.fcard {
+    height: 200px;
+}
+
+.pagination {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.428571429;
+    text-decoration: none;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    font-size: 1rem;
+}
+
+.menu-font-size {
+    font-size: 1rem;
+}
+
+/*@media  (min-width:1024px) {
+    .menu-ac-kapa {
+        display: none;
+    }
+}*/

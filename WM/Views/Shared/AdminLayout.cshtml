@@ -1,0 +1,291 @@
+﻿@using System.IO;
+@using System.Net;
+@using Microsoft.AspNetCore.Hosting
+@inject IHostingEnvironment HostingEnvironment
+
+
+@{
+    Layout = null;
+    var path = HostingEnvironment.WebRootPath;
+    string vidS = "1";
+    string cookie = "";
+    foreach (var cookies in Context.Request.Cookies)
+    {
+        if (cookies.Key == "vid")
+        {
+            cookie = cookies.Value;
+        }
+    }
+    if (cookie != "")
+    {
+        var vid = WM.Extentions.Encryption.Decrypt(cookie).Split("-");
+        vidS = vid[0];
+    }
+    var menu = Html.Raw(WM.Extentions.Functions.MenuRead(path + "/admin/menu/", vidS + ".html"));
+    var adminUser = Html.Raw(WM.Extentions.Functions.MenuRead(path + "/usermenu/", vidS + ".html"));
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"]</title>
+    <link rel="shortcut icon" href="~/logo.png" type="image/x-icon" />
+
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet"
+          type="text/css">
+    @*<link rel="shortcut icon" href="~/favicon.ico" />*@
+
+    <link href="~/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">    
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/layout.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/components.css" rel="stylesheet" />
+    <link href="~/assets/css/style.css" rel="stylesheet" type="text/css">
+    <link href="~/global_assets/css/icons/material/styles.min.css" rel="stylesheet" type="text/css">
+    <link href="~/global_assets/css/icons/fontawesome/styles.min.css" rel="stylesheet" type="text/css">
+
+    <link href="~/css/toastr.css" rel="stylesheet" />
+    <link href="~/ext_lib/tag/tagsinput.css" rel="stylesheet" />
+
+    <link href="~/ext_lib/data-table/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/ext_lib/data-table/responsive.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/css/toastify.min.css">
+    <!-- /global stylesheets -->
+    @RenderSection("Head", required: false)
+    <style>
+        .backbutton:hover {
+            color: white !important;
+        }
+
+        .backbutton {
+            color: white !important;
+        }
+
+        .non-active {
+            /**/ display: none;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="text-center loader non-active" id="loader-gif" style="z-index:99999;">
+        <div class="pace-demo" style=" position: absolute;">
+            <div class="theme_radar theme_radar_with_text">
+                <div class="pace_activity"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Main navbar -->
+    <div class="navbar navbar-expand-md navbar-dark">
+        <div class="navbar-brand">
+            <a href="index.html" class="d-inline-block" style="color:white"></a>
+            @*<img src="~/global_assets/images/logo_light.png" alt="">*@
+            <a href="##" onClick="history.go(-1); return false;" class="backbutton"> <span><i class="icon-arrow-left8"></i></span></a>
+
+
+        </div>
+
+        <div class="d-md-none">
+
+            <button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+                <i class="icon-paragraph-justify3" style="font-size: 25px;"></i>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbar-mobile">
+            <ul class="navbar-nav menu-ac-kapa">
+                <li class="nav-item">
+                    <a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
+                        <i class="icon-paragraph-justify3"></i>
+                    </a>
+                </li>
+            </ul>
+            <span class="ml-md-3 mr-md-auto"></span>
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown dropdown-user">
+                    <a class="navbar-nav-link d-flex align-items-center " href="~/admin/Logout">
+                        <span><i class="fas fa-sign-out-alt"></i>Çıkış Yap</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /main navbar -->
+    <!-- Page content -->
+    <div class="page-content">
+
+        <!-- Main sidebar -->
+        <div class="sidebar sidebar-dark sidebar-main sidebar-expand-md">
+
+            <!-- Sidebar mobile toggler -->
+            <div class="sidebar-mobile-toggler text-center">
+                <a href="#" class="sidebar-mobile-main-toggle">
+                    <i class="icon-arrow-left8"></i>
+                </a>
+                Menü
+                <a href="#" class="sidebar-mobile-expand">
+                    <i class="icon-screen-full"></i>
+                    <i class="icon-screen-normal"></i>
+                </a>
+            </div>
+            <!-- /sidebar mobile toggler -->
+            <!-- Sidebar content -->
+            <div class="sidebar-content">
+
+                <!-- User menu -->
+                <div class="sidebar-user">
+                    <div class="card-body">
+                        <div class="media">
+                            <div class="mr-3">
+                                <a href="/">
+                                    <img src="~/dollar-symbol.png"
+                                         width="70" height="70" class="img-thumbnail" alt="">
+                                </a>
+                            </div>
+
+                            @adminUser
+                            <div class="ml-3 align-self-center">
+                                @*<a href="#" class="text-white"><i class="icon-cog3"></i></a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /user menu -->
+                <!-- Main navigation -->
+                <div class="card card-sidebar-mobile">
+                    <ul class="nav nav-sidebar" data-nav-type="accordion">
+
+                        <!--Side bar burada basılıyor.-->
+                        @menu
+                        <li class="nav-item nav-item-submenu">
+
+                            <a class="nav-link" href="~/Admin/Logout">
+                                <span style="font-size:1rem"><i class="fas fa-power-off"></i>Çıkış Yap</span>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+                <!-- /main navigation -->
+
+            </div>
+            <!-- /sidebar content -->
+
+        </div>
+        <!-- /main sidebar -->
+        <!-- Main content -->
+        <div class="content-wrapper">
+
+            <!-- Page header -->
+            <!-- /page header -->
+            <!-- Content area -->
+
+            <div class="content">
+
+                @RenderBody()
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /main content -->
+
+    </div>
+    <!-- Core JS files -->
+    <script src="~/global_assets/js/main/jquery.min.js"></script>
+
+    <script src="~/global_assets/js/main/bootstrap.bundle.min.js"></script>
+
+
+    @*<script src="~/global_assets/js/main/bootstrap.bundle.min.js"></script>
+        <script src="~/global_assets/js/plugins/loaders/blockui.min.js"></script>
+
+        <script src="~/global_assets/js/plugins/extensions/jquery_ui/interactions.min.js"></script>
+        <script src="~/global_assets/js/plugins/extensions/jquery_ui/widgets.min.js"></script>
+        <script src="~/global_assets/js/plugins/extensions/jquery_ui/effects.min.js"></script>
+        <script src="~/global_assets/js/plugins/extensions/mousewheel.min.js"></script>
+        <script src="~/global_assets/js/plugins/extensions/jquery_ui/globalize/globalize.js"></script>*@
+
+    @*<script src="~/global_assets/js/plugins/forms/selects/select2.min.js"></script>
+        <script src="~/global_assets/js/demo_pages/form_select2.js"></script>*@
+
+    @*<script src="~/global_assets/js/demo_pages/components_collapsible.js"></script>*@
+
+    <script src="~/global_assets/js/plugins/extensions/jquery_ui/widgets.min.js"></script>
+    @*<script src="~/global_assets/js/plugins/extensions/jquery_ui/globalize/cultures/globalize.culture.tr-TR.js"></script>*@
+    <script src="~/assets/js/app.js"></script>
+    @*<script src="~/global_assets/js/demo_pages/jqueryui_forms.js"></script>*@
+
+    @*<script src="~/global_assets/js/plugins/loaders/progressbar.min.js"></script>
+        <script src="~/global_assets/js/demo_pages/components_progress.js"></script>*@
+
+    <script src="~/inputmask/jquery.inputmask.bundle.js"></script>
+    <script src="~/inputmask/inputmask.binding.js"></script>
+    <script src="~/inputmask/phone.js"></script>
+    <script src="~/inputmask/phone-be.js"></script>
+
+    <script src="~/js/sweetalert2@10.js"></script>
+    <script src="~/js/vue.js" xmlns:v-on="http://www.w3.org/1999/xhtml"></script>
+    <script src="~/js/axios.min.js"></script>
+    <script src="~/js/toastr.js"></script>
+    <script src="~/ext_lib/tag/tagsinput.js"></script>
+    <script src="~/js/moment.min.js"></script>
+    @*<script src="~/global_assets/js/demo_pages/components_modals.js"></script>*@
+    <script src="~/plugin/select2js/js/select2.min.js"></script>
+
+    <script src="~/plugin/ckeditor4/ckeditor.js"></script>
+
+    <script src="~/ext_lib/data-table/jquery.dataTables.min.js"></script>
+    <script src="~/ext_lib/data-table/dataTables.buttons.min.js"></script>
+    <script src="~/ext_lib/data-table/buttons.flash.min.js"></script>
+    <script src="~/ext_lib/data-table/jszip.min.js"></script>
+    <script src="~/ext_lib/data-table/pdfmake.min.js"></script>
+    <script src="~/ext_lib/data-table/vfs_fonts.js"></script>
+    <script src="~/ext_lib/data-table/buttons.html5.min.js"></script>
+    <script src="~/ext_lib/data-table/buttons.print.min.js"></script>
+    <script src="~/ext_lib/data-table/buttons.colVis.min.js"></script>
+    <script src="~/ext_lib/data-table/dataTables.responsive.min.js"></script>
+    <script src="~/ext_lib/data-table/dataTables.select.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.js-example-basic-multiple').select2();
+            $('.js-example-basic-single').select2();
+            $('js-data-example-ajax').select2();
+        });
+    </script>
+  
+
+    <script type="text/javascript">
+        var sayilar = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+        function isNumberKey(evt) {
+            if (sayilar.includes(evt.key))
+                return true;
+            return false;
+        }
+        var harf = ['a', 'b', 'c', 'ç', 'd', 'e', 'f', 'g', 'ğ', 'h', 'ı', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'ö', 'p', 'r', 's', 'ş', 't', 'u', 'ü', 'v', 'y', 'z', 'x', 'w', 'q', ' ',
+            'A', 'B', 'C', 'Ç', 'D', 'E', 'F', 'G', 'Ğ', 'H', 'I', 'İ', 'J', 'K', 'L', 'M', 'N', 'O', 'Ö', 'P', 'R', 'S', 'Ş', 'T', 'U', 'Ü', 'V', 'Y', 'Z', 'X', 'W', 'Q'
+        ];
+        function isCharKey(evt) {
+            if (harf.includes(evt.key))
+                return true;
+            return false;
+        }
+
+    </script>
+
+
+    @RenderSection("Scripts", required: false)
+
+
+</body>
+
+</html>
+

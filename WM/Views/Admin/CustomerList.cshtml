@@ -1,0 +1,307 @@
+﻿@model Core.ResultType.Result<DataObject.ViewModels.AdminModuleViewModel>
+@{
+    ViewData["Title"] = "Müşteri Kullanıcı Listesi";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+@section Head{
+}
+<div class="row" id="app">
+    <div class="col-lg-12">
+        <div class="card px-2">
+            <div class="card-body">
+                <h4 class="card-title">Müşteri Kullanıcı Listesi</h4>
+                <a href="#" class="btn badge-warning"><i class="icon-pencil"></i> </a> <span>Kullanıcı Düzenle</span>
+                <a href="#" class="btn waves-button btn-danger"><i class="fas fa-trash"></i></a> <span>Kullanıcı Hesabı Kapat</span>
+                <a href="#" class="btn badge-secondary"><i class="icon-reload-alt"></i> </a> <span>Şifre Değiştir</span>
+            </div>
+            @if (!Model.IsSuccess)
+            {
+                <div class="alert alert-danger mt-2 p-2" role="alert">
+                    @Model.Message
+                </div>
+            }
+            else
+            {
+
+                <div class="d-flex justify-content-end">
+                    <a asp-controller="Admin" asp-action="Create" class="btn btn-success"><i class="fas fa-plus"></i> Müşteri Ekle</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="table_id">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Adı Soyadı</th>
+                                <th>Lokasyon</th>
+                                <th>Ülke Kodu</th>
+                                <th>Telefon</th>
+                                <th>Email</th>
+                                <th>Şifre</th>
+                                <th>Rezervasyon Sayısı</th>
+                                <th>Kayıtlı mı</th>
+                                <th>Rol</th>
+                                <th>Uygulamada Seçtiği Dil</th>
+                                <th>Ekleyen</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+
+<script>
+    var dataTable = null;
+    $(document).ready(function () {
+        let url = `/Admin/GetCustomerList`;
+        dataTable = $('#table_id').DataTable(
+            {
+                "processing": true,
+                "serverSide": true,
+                "paging": true,
+                "responsive": true,
+                "filter": true,
+                "ajax": {
+                    "url": url,
+                    "type": "post",
+                    "datatype": "json",
+                    "beforeSend":function( obj ){
+                    $('#loader-gif').removeClass("non-active");
+                 },
+                "dataSrc": function ( obj ) {
+                     $('#loader-gif').addClass("non-active");
+                     return obj.data;
+                }
+                },
+                "columns": [
+                    { "data": "id", "name": "Id", "autoWidth": true },
+                    {
+                        "data": "name",
+                        "render": (data, type, row, meta) => {
+                            let user = `${row.name} ${row.surname}`;
+                            return user;
+                        },
+
+                        orderable: false,
+                    },
+                    { "data": "location.name", "name": "Lokasyon", "autoWidth": true, orderable: false },
+                    
+                    { "data": "cca2", "name": "Ülke Kodu", "autoWidth": true, orderable: true,
+                        "render": (data, type, row, meta) => {
+                            let formated_code="";
+                            if(row.cca2){
+                                formated_code +=row.cca2;                               
+                            }
+                            if(row.callingCode){
+                                 formated_code +="(+"+row.callingCode+")";
+                            }
+                            return formated_code;
+                        }
+                    },
+                    { "data": "phone", "name": "Telefon", "autoWidth": true, orderable: false },
+                    { "data": "email", "name": "Email", "autoWidth": true, orderable: false },
+                    { "data": "password", "name": "Şifre", "autoWidth": true, orderable: false, visible: false },
+                    { "data": "reservationCount", "name": "Rezervasyon Sayısı", "autoWidth": true, orderable: false },
+                    {
+                    "data": "nonRegister",
+                    "name": "Kayıtlı mı",
+                    "render": (data, type, row, meta) => {
+                        let badge = ``;
+                        if (row.nonRegister) {
+                            badge = `<span  class="badge badge-danger" style='font-size: 1rem;'>Hayır</span>`;
+                        } else {
+                            badge = `<span  class="badge badge-success" style='font-size: 1rem;'>Evet</span>`;
+                        }
+                        return badge;
+                    },
+                         orderable: true,
+                    },
+                    {
+                        "data": "rol",
+                        "name": "Rol",
+                        "render": (data, type, row, meta) => {
+                            let admin = `${row.rol.rol}`;
+                            return admin;
+                        },
+
+                        orderable: false,
+                    },
+                    { "data": "userLang", "name": "Uygulamada Seçtiği Dil", "autoWidth": true, orderable: false },
+                    {
+                        "data": "parent",
+                        "name": "Ekleyen",
+                        "render": (data, type, row, meta) => {
+                            let name_surname = `Kendisi`;
+                            if (row.parent && row .parent.name && row.parent.name.length > 0) {
+                                name_surname = `${row.parent.name} ${row.parent.surname}`;
+                            }
+                            return name_surname;
+                        },
+
+                        orderable: false,
+                    },
+                    {
+                        "data": null,
+                        "render": (data, type, row, meta) => {
+                            let opr = ``;
+                            if(!row.nonRegister){
+                                opr = `<a href="/Admin/Edit/${row.id}" class="btn badge-warning"><i class="icon-pencil"></i> </a>`;
+                                opr += `<a href="/Admin/PasswordChange/${row.id}" class="btn badge-secondary"><i class="icon-reload-alt"></i> </a>`;
+                            }
+                            opr += `<a href="#" onclick="sil(${row.id})" class="btn waves-button btn-danger"><i class="fas fa-trash"></i> </a>`;
+                            return opr;
+                        },
+                        orderable: false,
+                    },
+                ],
+                //"drawCallback": function (setting) {
+                //},
+                "language": {
+                    url:"/ext_lib/data-table/tr.json"
+                },
+                "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Hepsi"]],
+                "order": [[0, 'asc']],
+                "dom": 'lBftip',
+                "buttons": [
+                    //{
+                    //    extend: 'print',
+                    //    exportOptions: {
+                    //        columns: ':visible'
+                    //    },
+
+
+                    //},
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        orientation: 'landscape',
+                        customize: function (doc) {
+                            var tblBody = doc.content[1].table.body;
+                            // ***
+                            //This section creates a grid border layout
+                            // ***
+                            doc.content[1].layout = {
+                                hLineWidth: function (i, node) {
+                                    return (i === 0 || i === node.table.body.length) ? 2 : 1;
+                                },
+                                vLineWidth: function (i, node) {
+                                    return (i === 0 || i === node.table.widths.length) ? 2 : 1;
+                                },
+                                hLineColor: function (i, node) {
+                                    return (i === 0 || i === node.table.body.length) ? 'black' : 'gray';
+                                },
+                                vLineColor: function (i, node) {
+                                    return (i === 0 || i === node.table.widths.length) ? 'black' : 'gray';
+                                }
+                            };
+
+                        }
+                    },
+                    {
+                        extend: 'colvis',
+                        text: 'Göster/Gizle'
+                    },
+
+                ]
+            });
+
+
+
+        setTimeout(()=>{
+
+            // ================ Search on keyup enter ===============
+        $('#table_id_filter input').unbind();
+        $('#table_id_filter input').bind('keyup', function (e) {
+            if (e.keyCode == 13) {
+                dataTable.search(this.value).draw();
+            }
+        });
+        // ================ Search on keyup enter ===============
+
+        var table_id_wrapper = {
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between"
+        };
+
+        $('#table_id_wrapper').css(table_id_wrapper);
+        $('#table_id_length').css("marginTop", "8px");
+        $('.dt-buttons').css("marginTop", "8px");
+        $('.dt-buttons button').css("marginRight", "5px");
+        $('#table_id_filter').css("marginTop", "8px");
+        $('#table_id').css("width", "100%");
+        var table_id_paginate = {
+            margin: "auto",
+            marginTop: "4px",
+            marginRight: "0px"
+        };
+        $('#table_id_paginate').css(table_id_paginate);
+    },100);
+    });
+    function sil(id) {
+        let url = "/Admin/Delete/" + id;
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: "Hesap Kapatılsın mı ?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet',
+            cancelButtonText: 'Hayır'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                /*$('#loader-gif').removeClass("non-active");*/
+                // ============ <Start> Loading  ===========
+                Swal.fire({
+                    title: 'Lütfen Bekleyiniz...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                });
+                // ============ </End> Loading  ==========
+                axios({
+                    url: url,
+                    data: {id},
+                    method: 'Post'
+                }).then(res => {
+                    if (res.data.isSuccess === true) {
+                        /*$('#loader-gif').addClass("non-active");*/
+                        dataTable.draw();
+                        Swal.fire(res.data.message, '', 'success')
+                    }
+                    else {
+                        /*$('#loader-gif').addClass("non-active");*/
+
+                        Swal.fire(res.data.message, '', 'warning');
+                    }
+                }).catch(err => {
+                    /*$('#loader-gif').addClass("non-active");*/
+
+                    Swal.fire('İşlem yapılamadı, internet ile bağlantınızı kontrol ediniz.', '', 'error');// sen mesajları düzeltirsin tamam mı tamam
+                    console.log('ERR ::::::::  ', err);
+                });
+            }
+        })
+    }
+
+</script>
+
+
+}
+

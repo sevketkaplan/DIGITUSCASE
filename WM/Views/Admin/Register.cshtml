@@ -1,0 +1,134 @@
+﻿@model DataObject.WM.AdminDO
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Yönetici Girişi</title>
+
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="~/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/assets/css/bootstrap_limitless.min.css" rel="stylesheet" />
+    <link href="~/assets/css/layout.min.css" rel="stylesheet" />
+    <link href="~/assets/css/components.min.css" rel="stylesheet" />
+    <link href="~/global_assets/css/icons/fontawesome/styles.min.css" rel="stylesheet" />
+    <link href="~/assets/css/colors.min.css" rel="stylesheet" />
+    <style>
+        .giris {
+            background-color: #006466;
+        }
+
+            .giris:hover {
+                background-color: #075b5c;
+            }
+
+        .login-logo {
+            width: 50%;
+            height: auto;
+        }
+
+       
+        .login-body {
+            background-color: #fff;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .login-form > card {
+            background-color: rgba(255, 255, 255, 0.5)!important;
+        }
+    </style>
+</head>
+<body class="login-body" style="">
+
+    <!-- Page content -->
+    <div class="page-content">
+
+        <!-- Main content -->
+        <div class="content-wrapper">
+
+            <!-- Content area -->
+            <div class="content d-flex justify-content-center align-items-center">
+
+                <!-- Login card -->
+                <form class="login-form" asp-controller="Admin" asp-action="Register" method="post">
+                    <div class="card mb-0" style="background-color: rgba(255, 255, 255, 0.5);">
+                        <div class="card-body" >
+                           
+                            <div class="header text-center">
+                                <h1>KULLANICI GİRİŞİ</h1>
+                            </div>
+                            <div class="form-group form-group-feedback form-group-feedback-left">
+                                <input type="text" class="form-control" asp-for="@Model.Name" name="Name" placeholder="Ad">
+                                <div class="form-control-feedback">
+                                    <i class="icon-user text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-feedback form-group-feedback-left">
+                                <input type="text" class="form-control" asp-for="@Model.Surname" name="Surname" placeholder="Soyad">
+                                <div class="form-control-feedback">
+                                    <i class="icon-user text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-feedback form-group-feedback-left">
+                                <input type="text" class="form-control" asp-for="@Model.Email" name="Email" placeholder="Kullanıcı Adı">
+                                <div class="form-control-feedback">
+                                    <i class="icon-user text-muted"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group form-group-feedback form-group-feedback-left">
+                                <input type="password" class="form-control" asp-for="@Model.Password" name="Password" placeholder="Şifre">
+                                <div class="form-control-feedback">
+                                    <i class="icon-lock2 text-muted"></i>
+                                </div>
+                            </div>
+
+                            @if (ViewData["message"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissible">
+                                    @ViewData["message"]
+                                </div>
+                            }
+                            <div class="form-group">
+                                <button type="submit" class="giris btn btn-primary btn-block">Kayıt Ol</button>
+                            </div>
+                            <div class="d-flex  justify-content-between">
+
+                                <a style="color: #006466; font-size:1.4rem;" asp-controller="Admin" asp-action="Login">Zaten hesabım var.</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+                <!-- /login card -->
+
+            </div>
+            <!-- /content area -->
+
+        </div>
+        <!-- /main content -->
+
+    </div>
+    <!-- /page content -->
+    <script src="~/global_assets/js/main/jquery.min.js"></script>
+    <script src="~/global_assets/js/main/bootstrap.bundle.min.js"></script>
+    <script src="~/global_assets/js/plugins/loaders/blockui.min.js"></script>
+
+    <!-- /core JS files -->
+    <!-- Theme JS files -->
+
+    <script src="~/global_assets/js/plugins/forms/styling/uniform.min.js"></script>
+    <script src="~/assets/js/app.js"></script>
+    <script src="~/global_assets/js/demo_pages/login.js"></script>
+    <!-- /theme JS files -->
+</body>
+</html>
+

@@ -1,0 +1,57 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hesap Aktifleştirme</title>
+
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="~/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/assets/css/bootstrap_limitless.min.css" rel="stylesheet" />
+    <link href="~/assets/css/layout.min.css" rel="stylesheet" />
+    <link href="~/assets/css/components.min.css" rel="stylesheet" />
+    <link href="~/global_assets/css/icons/fontawesome/styles.min.css" rel="stylesheet" />
+
+</head>
+<body style="background-color:#f3f3f3;">
+
+    <!-- Page content -->
+    <div class="page-content" id="app">
+
+        <div class="content-wrapper">
+
+            <div class="content d-flex justify-content-center align-items-center">
+
+                <div class="card mb-0" style="border: 2px dashed #38e065">
+                    <div class="card-body">
+                        
+                        <h4 class="card-title" style="color: #38e065">Kayıt Başarılı.</h4>
+                        <div class="alert alert-success" role="alert">
+                            @ViewData["message"]
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <a href="/" class="btn btn-outline-success">Ana Sayfaya Geri Dön</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- /page content -->
+
+</body>
+</html>
+
+
+
+

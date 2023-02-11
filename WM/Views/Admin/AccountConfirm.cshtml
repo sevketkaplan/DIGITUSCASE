@@ -1,0 +1,261 @@
+﻿@model DataObject.WM.AdminDO
+@{
+    Layout = null;
+    string token = string.Empty;
+    if (Context.Request.Query.ContainsKey("token"))
+    {
+        token = Context.Request.Query["token"].ToString();
+    }
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Ebelik Klinik Otomasyonu</title>
+
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="~/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/assets/css/bootstrap_limitless.min.css" rel="stylesheet" />
+    <link href="~/assets/css/layout.min.css" rel="stylesheet" />
+    <link href="~/assets/css/components.min.css" rel="stylesheet" />
+    <link href="~/global_assets/css/icons/fontawesome/styles.min.css" rel="stylesheet" />
+    <link href="~/assets/css/colors.min.css" rel="stylesheet" />
+    <style>
+        .giris {
+            background-color: #0c6a80;
+        }
+
+            .giris:hover {
+                background-color: #4a8483;
+            }
+
+        .non-active {
+            /**/ display: none;
+        }
+    </style>
+</head>
+<body style="background-color:#f3f3f3;">
+    <div class="text-center loader non-active " id="loader-gif" style="z-index:99999;">
+        <div class="pace-demo" style=" position: absolute;">
+            <div class="theme_radar theme_radar_with_text">
+                <div class="pace_activity"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="page-content">
+
+        <!-- Main content -->
+        <div class="content-wrapper" id="app">
+
+            <!-- Content area -->
+            <div class="content d-flex justify-content-center align-items-center">
+
+                <!-- Password recovery form -->
+
+                @if (ViewData["success"] != null)
+                {
+                    <div class="alert alert-success">
+                        @ViewData["success"]
+                    </div>
+                }
+                @if (ViewData["message"] != null)
+                {
+                    <div class="alert alert-danger mt-2 p-2">
+                        @ViewData["message"]
+                    </div>
+                }
+                <div class="card mb-0">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <i class="icon-spinner11 icon-2x border-3 rounded-round p-3 mb-3 mt-1" style="color:#53B0AF;"></i>
+                            <h5 class="mb-0">Bilgi değişikliği-Hesap Onayı</h5>
+                            @*<span class="d-block text-muted">Bilgilerinizi içeren bir mail yollayacağız.</span>*@
+                        </div>
+                        <form v-on:submit.prevent="accountconfirm()" method="post">
+                            <div class="form-group form-group-feedback form-group-feedback-right">
+                                <input type="password" v-model="oldpassword" class="form-control" required placeholder="Eski Şifreniz">
+                                <div class="form-control-feedback">
+                                    <i class="icon-lock text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-feedback form-group-feedback-right">
+                                <input type="password" v-model="password" class="form-control" required placeholder="Yeni şifre">
+                                <div class="form-control-feedback">
+                                    <i class="icon-lock text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-feedback form-group-feedback-right">
+                                <input type="password" v-model="password_confirm" class="form-control" required placeholder="Yeni şifre tekrar">
+                                <div class="form-control-feedback">
+                                    <i class="icon-lock text-muted"></i>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-feedback form-group-feedback-right">
+                                <input type="email" v-model="email" class="form-control" required placeholder="Email adresiniz">
+                                <div class="form-control-feedback">
+                                    <i class="icon-mail5 text-muted"></i>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="giris btn bg-blue btn-block"><i class="icon-spinner11 mr-2"></i>Bilgileri Kaydet</button>
+                        </form>
+
+                        
+                    </div>
+                </div>
+                <!-- /password recovery form -->
+
+            </div>
+            <!-- /content area -->
+        </div>
+        <!-- /main content -->
+
+    </div>
+    <!-- /page content -->
+
+    <script src="~/global_assets/js/main/jquery.min.js"></script>
+    <script src="~/global_assets/js/main/bootstrap.bundle.min.js"></script>
+    <script src="~/global_assets/js/plugins/loaders/blockui.min.js"></script>
+
+    <!-- /core JS files -->
+    <!-- Theme JS files -->
+
+    <script src="~/global_assets/js/plugins/forms/styling/uniform.min.js"></script>
+    <script src="~/assets/js/app.js"></script>
+    <script src="~/global_assets/js/demo_pages/login.js"></script>
+    <script src="~/js/sweetalert2@10.js"></script>
+
+    <!-- /theme JS files -->
+    <script src="https://unpkg.com/vue@2.5.17/dist/vue.js" xmlns:v-on="http://www.w3.org/1999/xhtml"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                token: "",
+                oldpassword: "",
+                password: "",
+                password_confirm: "",
+                email: "",
+                //timer : 10, // timer in seconds
+                //isTimerStarted : false,
+            },
+            created: function(){ 
+                @Html.Raw("this.token = " + Json.Serialize(token) + ";")
+            },
+            methods: {
+
+                accountconfirm: function () {
+                    if (this.password === this.password_confirm) {
+                        let url = "/Admin/AccountConfirm";
+                        let data = {
+                            token: vm.token,
+                            oldpassword: vm.oldpassword,
+                            password: vm.password,
+                            password_confirm: vm.password_confirm,
+                            email: vm.email
+                        };
+                        if (data.password.length > 7) {
+                            Swal.fire({
+                                title: 'Emin misiniz?',
+                                text: "Hesabı onaylıyor musunuz?",
+                                icon: 'info',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Evet',
+                                cancelButtonText: 'Hayır'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $('#loader-gif').removeClass("non-active");
+                                    axios({
+                                        url: url,
+                                        data: data,
+                                        method: 'Post'
+                                    }).then(res => {
+                                        if (res.data.isSuccess === true) {
+                                          
+                                            let timerInterval
+                                            Swal.fire({
+                                                title: 'Otomatik Geçiş!',
+                                                html: ' <b> </b>  saniye sonra giriş sayfasına yönlendirileceksiniz. ',
+                                                timer: 6000,
+                                                timerProgressBar: true,
+                                                didOpen: () => {
+                                                    Swal.showLoading()
+                                                    const b = Swal.getHtmlContainer().querySelector('b')
+                                                    timerInterval = setInterval(() => {
+                                                        b.textContent = (Swal.getTimerLeft() / 1000).toFixed(0)
+                                                    }, 1000)
+                                                },
+                                                willClose: () => {
+                                                    clearInterval(timerInterval)
+                                                }
+                                            }).then((result) => {
+                                                /* Read more about handling dismissals below */
+                                                if (result.dismiss === Swal.DismissReason.timer) {
+
+                                                    window.location.href = '/si_panel';
+
+                                                }
+                                            })
+
+                                            //$('#loader-gif').addClass("non-active");
+                                            //Swal.fire(res.data.message, '5 saniye sonra giriş sayfasına yönlendirileceksiniz.', 'success')
+                                            //setTimeout(function () {
+                                            //    window.location.href = '/si_panel';
+                                            //}, 5000);
+                                        }
+                                        else {
+                                            $('#loader-gif').addClass("non-active");
+                                            Swal.fire(res.data.message, '', 'warning');
+                                        }
+                                    }).catch(err => {
+                                        $('#loader-gif').addClass("non-active");
+                                        Swal.fire('Hesap onaylanırken bilinmeyen bir hata yaşandı.', '', 'error');
+                                        console.log('ERR ::::::::  ', err);
+                                    });
+                                }
+                            })
+                        } else {
+                            Swal.fire('Şifreniz belirlenen karakter uzunluğundan kısadır.(en az 8 karakter)', '', 'error');
+                        }
+                    }
+                    else {
+                        Swal.fire('Şifreler Eşleşmedi.', '', 'error');
+                    }
+
+                },
+               
+            }
+        });
+    </script>
+    @*<script type="text/javascript">
+        var timer = 10, // timer in seconds
+         isTimerStarted = false;
+
+        (function customSwal() {
+            swal({
+                title: "Please w8 !",
+                text: "Data loading..." + timer,
+                timer: !isTimerStarted ? timer * 1000 : undefined,
+                showConfirmButton: false
+            });
+            isTimerStarted = true;
+            if (timer) {
+                timer--;
+                setTimeout(customSwal, 1000);
+            }
+        })();
+    </script>*@
+
+</body>
+</html>
+

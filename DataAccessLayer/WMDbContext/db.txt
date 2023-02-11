@@ -1,0 +1,22 @@
+﻿
+kurulum kodu: 
+dotnet ef dbcontext scaffold "Host=46.101.146.148;Database=digit_case;Username=postgreroot;Password=Ali.1453.Arge" Npgsql.EntityFrameworkCore.PostgreSQL -o WMDbContext --context WMDbContext --verbose --force
+                    // Scaffold-DbContext "Host=46.101.146.148;Database=digit_case;Username=postgreroot;Password=Ali.1453.Arge" Npgsql.EntityFrameworkCore.PostgreSQL -OutputDir WMDbContext -Context "WMDbContext" -DataAnnotations -force
+1- Eğer bu kodda file or command not found hatası alırsanız lütfen dotnet tool u powershell üzerinden indirin. // indirme kodu: dotnet tool install --global dotnet-ef
+2- Tool u indirdikten sonra powershell i kapa-aç.
+3- Microsoft.EntityFrameworkCore.Design yoktur hatası alırsanız nuget tan indirin.
+4- Microsoft.EntityFrameworkCore.Design indirdikten sonra powershell i kapa-aç.
+5- en baştaki kodu tekrardan çalıştır.
+5- en baştaki kodu tekrardan çalıştır.
+6- help için; dotnet ef dbcontext scaffold --help
+
+
+
+//publish
+dotnet publish -c Release -r ubuntu.18.04-x64 --self-contained
+
+
+///ignore 
+     modelBuilder.Entity<AdminRol>().Ignore("Admin");
+     modelBuilder.Entity<District>().Ignore("City");         
+Scaffold-DbContext "Host=46.101.146.148;Database=digit_case;Username=postgreroot;Password=Ali.1453.Arge" Npgsql.EntityFrameworkCore.PostgreSQL -OutputDir MSCDbContext -Context "MSCDbContext" -DataAnnotations -force

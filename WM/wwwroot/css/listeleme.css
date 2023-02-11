@@ -1,0 +1,51 @@
+﻿.whiterow {
+    text-align: left;
+    color: #344750;
+}
+
+.info-list {
+    list-style-type: none;
+}
+
+    .info-list > li > h5 {
+        font-weight: 600;
+    }
+
+.mini-title {
+    font-weight: 600;
+}
+
+.info-list > li > span {
+    color: #344750;
+}
+
+.card {
+    box-shadow: 0 0 0 0px rgba(0,0,0,.15);
+}
+
+.search-form {
+    margin-bottom: 25px;
+}
+
+.search-input {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border: 0px;
+    border-radius: 0px;
+    border-bottom: 2px solid;
+    background-color: #f5f5f5;
+}
+
+    .search-input:focus {
+        border-bottom: 2px solid #53B0AF !important;
+    }
+
+
+
+.whiterow > .row > .col-lg-4 > a {
+    width: 80px;
+    margin-top: 10px;
+}
+
+
+

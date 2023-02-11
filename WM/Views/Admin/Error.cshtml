@@ -1,0 +1,81 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Error</title>
+
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="~/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/assets/css/bootstrap_limitless.min.css" rel="stylesheet" />
+    <link href="~/assets/css/layout.min.css" rel="stylesheet" />
+    <link href="~/assets/css/components.min.css" rel="stylesheet" />
+    <link href="~/global_assets/css/icons/fontawesome/styles.min.css" rel="stylesheet" />
+ 
+     <style>
+        .giris {
+            background-color: #006466;
+        }
+
+            .giris:hover {
+                background-color: #075b5c;
+            }
+        .non-active {
+            /**/ display: none;
+        }
+        .login-logo {
+            width: 50%;
+            height: auto;
+        }
+
+       
+        .login-body {
+            background-color: #fff;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .login-form {
+            background-color: rgba(255, 255, 255, 0.5)!important;
+        }
+    </style>
+</head>
+<body class="login-body">
+    
+    <!-- Page content -->
+    <div class="page-content" id="app">
+         
+        <div class="content-wrapper">
+             
+            <div class="content d-flex justify-content-center align-items-center">
+                 
+                <div class="card mb-0" style="border: 2px dashed red">
+                    <div class="card-body">
+                      
+                        <h4 class="card-title">HATA OLUŞTU</h4>
+                        <div class="alert alert-danger mt-2 p-2" role="alert">
+                            @ViewData["message"]
+                        </div>
+
+                    </div>
+                </div> 
+
+            </div> 
+        </div> 
+
+    </div>
+    <!-- /page content -->
+
+</body>
+</html>
+
+
+
+

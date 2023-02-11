@@ -1,0 +1,34 @@
+﻿@media (min-width: 768px) and (max-width: 1200px) {
+    #min {
+        margin-left: 0px;
+        margin-top: 20px;
+    }
+}
+
+
+
+@media (max-width: 767px) {
+    .set-mt-3 {
+        margin-top: 20px;
+    }
+    .screen-mock{
+        display:none;
+    }
+   
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .screenshot-wrap {
+        margin: 47px -20px 0px;
+    }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    .screenshot-wrap {
+        margin: 59.75px -18.9px 0px;
+    }
+}
+@media (min-width: 1200px) {
+    .screenshot-wrap {
+        margin: 59.75px -18.9px 0px;
+    }
+}
